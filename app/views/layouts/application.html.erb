@@ -34,6 +34,10 @@
           <li class="active"><a href="#">Home</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#contact">Contact</a></li>
+          <% if !current_user.nil? %>
+                <li><%= link_to fa_icon("male",:text=> current_user[:email]), edit_user_registration_path(current_user) %></li>
+                <li><%= link_to fa_icon("sign-out",:text=>t(:signout)),destroy_user_session_path,:method=>:delete %></li>
+          <% end %>
         </ul>
       </div>
     </div>
@@ -46,7 +50,10 @@
       <% end %>
     <% end %>
   </div>
+
+<% conditional_div(:show_div => !(controller.controller_name == "welcome" and controller.action_name == "index"), :class => 'container') do %>
     <%= yield %>
+<% end %>
 
 </body>
 </html>

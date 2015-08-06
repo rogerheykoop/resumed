@@ -2,10 +2,13 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :user_id %>
+    <% if current_user.has_role?(:admin) %>
+        <%= f.input :user_id,:label=>"User that this resume belongs to",:as=>:select, :collection=>User.all.order("email asc"),:label_method => :email,:value_method => :id,:include_blank => false %>
+    <% end %>
+    <%= f.input :name,:label=>"Name of this resume" %>
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit %>
+    <%= f.button :submit, :class=>'btn btn-large btn-primary' %>
   </div>
 <% end %>
