@@ -25,7 +25,10 @@ class ResumesController < ApplicationController
   # POST /resumes.json
   def create
     @resume = Resume.new(resume_params)
-
+    if current_user.has_role?(:user)
+      # only admin can set another user
+      @resume[:user_id] == current_user[:id]
+    end
     respond_to do |format|
       if @resume.save
         format.html { redirect_to @resume, notice: 'Resume was successfully created.' }

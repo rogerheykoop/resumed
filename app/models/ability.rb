@@ -11,6 +11,8 @@ class Ability
          can :manage, Resume, :user_id => user.id
          can :manage, EducationHistory, :user_id => user.id
          can :manage, WorkHistory, :user_id => user.id
+         can :create, Resume
+         can :update, Resume
     else
         # guest user can read all
          can :read, :all

@@ -8,4 +8,14 @@ class User < ActiveRecord::Base
   has_many :resumes
   has_many :work_histories, through: :resumes
   has_many :education_histories, through: :resumes
+
+
+ before_create :set_default_role
+
+  private
+  def set_default_role
+    self.add_role :user
+  end
+
+
 end

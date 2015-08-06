@@ -23,7 +23,7 @@
 
       <tbody>
         <%= content_tag_for(:tr, @resumes) do |resume| %>
-          <td><%= resume.user_id %></td>
+          <td><%= resume.inspect %></td>
           <td><%= link_to 'Show', resume %></td>
           <td><%= link_to 'Edit', edit_resume_path(resume) %></td>
           <td><%= link_to 'Destroy', resume, method: :delete, data: { confirm: 'Are you sure?' } %></td>
