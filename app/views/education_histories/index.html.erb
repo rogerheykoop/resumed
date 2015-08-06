@@ -1,0 +1,29 @@
+<div class="page-header">
+  <%= link_to new_education_history_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Education history
+  <% end %>
+  <h1>Listing education_histories</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th>Resume</th>
+            <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @education_histories) do |education_history| %>
+            <td><%= education_history.resume_id %></td>
+            <td><%= link_to 'Show', education_history %></td>
+        <td><%= link_to 'Edit', edit_education_history_path(education_history) %></td>
+        <td><%= link_to 'Destroy', education_history, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,81 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+
+@import url(http://fonts.googleapis.com/css?family=Lobster);
+@import url(http://fonts.googleapis.com/css?family=Lato:400,300,300italic,400italic,900,900italic);
+
+body {
+        font-family: "Lato";
+}
+.parallax1 {
+        min-height: 500px;
+}
+.parallax2 {
+        min-height: 200px;
+        background-color: #404090;
+        color: white;
+        font-family: "Lato";
+        font-size: 12pt;
+}
+
+.parallax2 h1 {
+        font-family: "Lobster";
+}
+.parallax2 h2 {
+        font-family: "Lobster";
+}
+.parallax2 h3 {
+        font-family: "Lobster";
+}
+
+.parallax3 {
+        min-height: 200px;
+}
+.parallax3 h1 {
+        font-family: "Lato";
+        font-weight: bold;
+color: rgb(255,255,255);
+font-size: 50px;
+text-shadow: rgb(0, 0,0) 0px 0px 5px;
+
+}
+
+.parallax4 {
+        font-family: "Lato";
+        font-size: 7pt;
+        color: #444;
+        background-color: #CCC;
+}
+
+
+
+.jumbotron h1 {
+        font-family: "Lobster";
+        -webkit-text-stroke: 1px black;
+    -webkit-text-fill-color: white;
+    color: white;
+    text-shadow:
+    3px 3px 0 #000,
+   -1px -1px 0 #000,
+    1px -1px 0 #000,
+   -1px  1px 0 #000,
+    1px  1px 0 #000;
+
+
+}
+
+
