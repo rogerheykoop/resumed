@@ -27,7 +27,8 @@ class ResumesController < ApplicationController
     @resume = Resume.new(resume_params)
     if current_user.has_role?(:user)
       # only admin can set another user
-      @resume[:user_id] == current_user[:id]
+      logger.info("BLAAA")
+      @resume[:user_id] = current_user[:id]
     end
     respond_to do |format|
       if @resume.save
