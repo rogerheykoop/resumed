@@ -1,0 +1,25 @@
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th>Company name</th>
+            <th>Position</th>
+            <th>From</th>
+            <th>Until</th>
+            <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, work_histories) do |work_history| %>
+            <td><%= work_history.company_name %></td>
+            <td><%= work_history.position %></td>
+            <td><%= work_history.from %></td>
+            <td><%= work_history.until %></td>
+        <td><%= link_to 'Edit', edit_work_history_path(work_history),:class=>"btn btn-warning" %></td>
+        <td><%= link_to 'Destroy', work_history, method: :delete, :remote => true, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger" %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,11 +1,52 @@
-<%= simple_form_for(@work_history) do |f| %>
+<% if @work_history.nil?
+	@work_history = WorkHistory.new
+	@work_history[:resume_id] = resume_id
+	@work_history[:from] = (Time.now - 1.year).strftime("%m/%d/%Y")
+	@work_history[:until] = (Time.now).strftime("%m/%d/%Y")
+
+end
+%>
+<%= simple_form_for(@work_history,:remote=>true) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :resume_id %>
+    <%= f.input :resume_id, :as=>:hidden %>
+    <%= f.input :company_name %>
+    <%= f.input :position %>
+    <%= f.input :from, :as=>:text %>
+    <%= f.input :until, :as=>:text %>
+    <div class="form-group string optional work_history_from_until">
+	     <label class="string optional control-label" for="work_history_from_until">
+	        Time period
+	     </label>
+	     <input class="string optional form-control" type="text" name="from_until" id="work_history_from_until"/>
+    </div>
+
+
   </div>
 
+<script type="text/javascript">
+$( document ).ready(function() {
+	$('#work_history_from_until').daterangepicker({
+	    "showDropdowns": true,
+	    "showWeekNumbers": true,
+	    "timePickerIncrement": 1,
+	    "startDate": $("#work_history_from").val(),
+	    "endDate": $("#work_history_until").val(),
+	    "opens": "left",
+	    "drops": "down",
+	    "buttonClasses": "btn btn-sm",
+	    "applyClass": "btn-success",
+	    "cancelClass": "btn-warning"
+	  }, function(start, end, label) {
+	  	$("#work_history_from").val(start.format('MM/DD/YYYY'))
+	  	$("#work_history_until").val(end.format("MM/DD/YYYY"))
+	  console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
+	 });
+});
+</script>
+
   <div class="form-actions">
-    <%= f.button :submit %>
+    <%= f.button :submit, :class=>"btn btn-primary" %>
   </div>
 <% end %>

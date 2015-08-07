@@ -11,6 +11,7 @@
  * file per style scope.
  *
  *= require font-awesome
+ *= require daterangepicker
  *= require_tree .
  *= require_self
  */
@@ -41,6 +42,10 @@ body {
 }
 .parallax2 h3 {
         font-family: "Lobster";
+}
+
+.lobster {
+    font-family: "Lobster";
 }
 
 .parallax3 {

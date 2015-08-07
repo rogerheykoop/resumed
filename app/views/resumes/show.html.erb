@@ -7,11 +7,25 @@
     <span class="glyphicon glyphicon-pencil"></span>
     Edit
   <% end %>
-  <h1><%= @resume.name %></h1>
+  <h1 class="lobster"><%= @resume.name %></h1>
 </div>
 
 <dl class="dl-horizontal">
   <dt>User:</dt>
-  <dd><%= @resume.user_id %></dd>
+  <dd><%= @resume.user.email %></dd>
 
 </dl>
+
+<h2 class="lobster">Work history</h2>
+<% if @resume.work_histories.blank? %>
+No work experience yet
+<% else %>
+<div id="work_histories">
+  <%= render :partial => "work_histories/index",:locals=>{:work_histories=>@resume.work_histories.order("'from' desc")} %>
+</div>
+<% end %>
+<div id="workhistoryform" class="collapse">
+  <%= render :partial => "work_histories/form",:locals=>{:resume_id=>@resume.id} %>
+</div>
+<BR>
+<a class="btn btn-primary" id="addworkhistory_btn" data-toggle="collapse" data-target="#workhistoryform">Add work history</a>

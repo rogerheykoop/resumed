@@ -29,6 +29,7 @@ class WorkHistoriesController < ApplicationController
     respond_to do |format|
       if @work_history.save
         format.html { redirect_to @work_history, notice: 'Work history was successfully created.' }
+        format.js   { render }
         format.json { render :show, status: :created, location: @work_history }
       else
         format.html { render :new }
@@ -57,6 +58,7 @@ class WorkHistoriesController < ApplicationController
     @work_history.destroy
     respond_to do |format|
       format.html { redirect_to work_histories_url, notice: 'Work history was successfully destroyed.' }
+      format.js   { render }
       format.json { head :no_content }
     end
   end
@@ -69,6 +71,6 @@ class WorkHistoriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def work_history_params
-      params.require(:work_history).permit(:resume_id)
+      params.require(:work_history).permit(:resume_id,:position,:from,:until,:company_name)
     end
 end

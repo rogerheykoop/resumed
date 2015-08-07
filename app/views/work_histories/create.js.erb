@@ -1,0 +1,5 @@
+<%
+	partial = render :partial => 'work_histories/index', :locals => {:work_histories => @work_history.resume.work_histories.order("'from' desc") }
+%>
+$("#workhistoryform").collapse();
+$("#work_histories").html("<%= escape_javascript(partial) %>");
