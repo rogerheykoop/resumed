@@ -1,0 +1,24 @@
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th>School name</th>
+            <th>Education</th>
+            <th>From</th>
+            <th>Until</th>
+            <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, education_histories) do |education_history| %>
+            <td><%= education_history.school_name %></td>
+            <td><%= education_history.education %></td>
+            <td><%= education_history.from %></td>
+            <td><%= education_history.until %></td>
+        <td><%= link_to fa_icon(:trash), education_history, method: :delete, :remote => true, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger" %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

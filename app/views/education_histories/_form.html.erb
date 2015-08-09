@@ -1,11 +1,50 @@
-<%= simple_form_for(@education_history) do |f| %>
+<% if @education_history.nil?
+	@education_history = EducationHistory.new
+	@education_history[:resume_id] = resume_id
+	@education_history[:from] = (Time.now - 1.year).strftime("%m/%d/%Y")
+	@education_history[:until] = (Time.now).strftime("%m/%d/%Y")
+
+end
+%>
+<%= simple_form_for(@education_history,:remote=>true) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= f.input :resume_id %>
+    <%= f.input :resume_id, :as=>:hidden %>
+    <%= f.input :school_name %>
+    <%= f.input :education %>
+    <%= f.input :from, :as=>:hidden %>
+    <%= f.input :until, :as=>:hidden %>
+    <div class="form-group string optional education_history_from_until">
+	     <label class="string optional control-label" for="education_history_from_until">
+	        Time period
+	     </label>
+	     <input class="string optional form-control" type="text" name="from_until" id="education_history_from_until"/>
+    </div>
   </div>
 
+<script type="text/javascript">
+$( document ).ready(function() {
+	$('#education_history_from_until').daterangepicker({
+	    "showDropdowns": true,
+	    "showWeekNumbers": true,
+	    "timePickerIncrement": 1,
+	    "startDate": $("#education_history_from").val(),
+	    "endDate": $("#education_history_until").val(),
+	    "opens": "left",
+	    "drops": "down",
+	    "buttonClasses": "btn btn-sm",
+	    "applyClass": "btn-success",
+	    "cancelClass": "btn-warning"
+	  }, function(start, end, label) {
+	  	$("#education_history_from").val(start.format('MM/DD/YYYY'))
+	  	$("#education_history_until").val(end.format("MM/DD/YYYY"))
+	 });
+});
+</script>
+
+
   <div class="form-actions">
-    <%= f.button :submit %>
+    <%= f.button :submit, :class=>"btn btn-primary" %>
   </div>
 <% end %>

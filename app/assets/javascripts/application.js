@@ -32,6 +32,18 @@ $( document ).ready(function() {
     $('#addworkhistory_btn').addClass('btn-warning');
   });
 
+  $('#educationhistoryform').on('hide.bs.collapse', function () {
+    $('#addeducationhistory_btn').html('Add education history');
+    $('#addeducationhistory_btn').removeClass('btn-warning');
+    $('#addeducationhistory_btn').addClass('btn-primary');
+  })
+  $('#educationhistoryform').on('show.bs.collapse', function () {
+    $('#addeducationhistory_btn').html('Cancel/close');
+    $('#addeducationhistory_btn').removeClass('btn-primary');
+    $('#addeducationhistory_btn').addClass('btn-warning');
+  });
+
+
 
   $('#daterangepicker').daterangepicker({
     "showDropdowns": true,

@@ -17,8 +17,7 @@
             <td><%= work_history.position %></td>
             <td><%= work_history.from %></td>
             <td><%= work_history.until %></td>
-        <td><%= link_to 'Edit', edit_work_history_path(work_history),:class=>"btn btn-warning" %></td>
-        <td><%= link_to 'Destroy', work_history, method: :delete, :remote => true, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger" %></td>
+        <td><%= link_to fa_icon(:trash), work_history, method: :delete, :remote => true, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger" %></td>
       <% end %>
     </tbody>
   </table>

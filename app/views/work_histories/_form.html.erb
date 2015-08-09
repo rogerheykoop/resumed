@@ -13,16 +13,14 @@ end
     <%= f.input :resume_id, :as=>:hidden %>
     <%= f.input :company_name %>
     <%= f.input :position %>
-    <%= f.input :from, :as=>:text %>
-    <%= f.input :until, :as=>:text %>
+    <%= f.input :from, :as=>:hidden %>
+    <%= f.input :until, :as=>:hidden %>
     <div class="form-group string optional work_history_from_until">
 	     <label class="string optional control-label" for="work_history_from_until">
 	        Time period
 	     </label>
 	     <input class="string optional form-control" type="text" name="from_until" id="work_history_from_until"/>
     </div>
-
-
   </div>
 
 <script type="text/javascript">
@@ -41,7 +39,6 @@ $( document ).ready(function() {
 	  }, function(start, end, label) {
 	  	$("#work_history_from").val(start.format('MM/DD/YYYY'))
 	  	$("#work_history_until").val(end.format("MM/DD/YYYY"))
-	  console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
 	 });
 });
 </script>

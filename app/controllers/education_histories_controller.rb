@@ -29,6 +29,7 @@ class EducationHistoriesController < ApplicationController
     respond_to do |format|
       if @education_history.save
         format.html { redirect_to @education_history, notice: 'Education history was successfully created.' }
+        format.js   { render }
         format.json { render :show, status: :created, location: @education_history }
       else
         format.html { render :new }
@@ -57,6 +58,7 @@ class EducationHistoriesController < ApplicationController
     @education_history.destroy
     respond_to do |format|
       format.html { redirect_to education_histories_url, notice: 'Education history was successfully destroyed.' }
+      format.js   { render }
       format.json { head :no_content }
     end
   end
@@ -69,6 +71,6 @@ class EducationHistoriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def education_history_params
-      params.require(:education_history).permit(:resume_id)
+      params.require(:education_history).permit(:resume_id,:school_name,:from,:until)
     end
 end

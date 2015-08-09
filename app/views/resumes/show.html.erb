@@ -29,3 +29,17 @@ No work experience yet
 </div>
 <BR>
 <a class="btn btn-primary" id="addworkhistory_btn" data-toggle="collapse" data-target="#workhistoryform">Add work history</a>
+
+<h2 class="lobster">Education history</h2>
+<% if @resume.education_histories.blank? %>
+No education history yet
+<% else %>
+<div id="education_histories">
+  <%= render :partial => "education_histories/index",:locals=>{:education_histories=>@resume.education_histories.order("'from' desc")} %>
+</div>
+<% end %>
+<div id="educationhistoryform" class="collapse">
+  <%= render :partial => "education_histories/form",:locals=>{:resume_id=>@resume.id} %>
+</div>
+<BR>
+<a class="btn btn-primary" id="addeducationhistory_btn" data-toggle="collapse" data-target="#educationhistoryform">Add education history</a>
