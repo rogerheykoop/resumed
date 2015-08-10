@@ -15,8 +15,8 @@ describe "API user data" , :type => :request do
   it "should give other users data" do
     get_with_auth "/api/v1/users/#{otheruser.id}.json",user.email,"abcd1234ABCD"
     expect(last_response.status).to eql(200)
-    expect(JSON.parse(last_response.body)["user"]["id"]).to eql(user.id)
-    expect(JSON.parse(last_response.body)["user"]["email"]).to eql(user.email)
+    expect(JSON.parse(last_response.body)["user"]["id"]).to eql(otheruser.id)
+    expect(JSON.parse(last_response.body)["user"]["email"]).to eql(otheruser.email)
   end
 
 
