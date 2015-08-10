@@ -10,11 +10,11 @@ class User < ActiveRecord::Base
   has_many :education_histories, through: :resumes
 
 
- before_create :set_default_role
+ after_create :set_default_role
 
   private
   def set_default_role
-    self.add_role :user
+    self.add_role :user if self.roles.blank?
   end
 
 

@@ -29,12 +29,14 @@ class Api::V1::UsersController < Api::V1::BaseController
     # at their own endpoints.
     # Only a record owner (role == user and current user eq given user id)
     # or an admin (role == admin) can update.
-    if current_user.has_role?(:admin) or (current_user.has_role?(:user) and current_user.id == params[:id])
+    if current_user.has_role?(:admin) or (current_user.has_role?(:user) and (current_user["id"].to_s == params["id"].to_s))
       if @user.update(user_params)
-        render(json: Api::V1::UserSerializer.new(user).to_json)
+        render(json: Api::V1::UserSerializer.new(@user).to_json)
       else
         render :json => { :errors => @user.errors.full_messages }
       end
+    else
+        render :json => { :errors => "Error: You are not allowed to do this." }
     end
   end
 
