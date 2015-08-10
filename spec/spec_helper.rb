@@ -16,7 +16,20 @@
 # users commonly want.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+
+require 'factory_girl_rails'
+require 'rails_helper'
+
+#Dir[Rails.root.join("spec/**/*.rb")].each {|f| require f}
+
+
 RSpec.configure do |config|
+
+  config.infer_spec_type_from_file_location!
+  config.include RSpec::Rails::RequestExampleGroup, type: :request
+  config.include Rack::Test::Methods
+  config.include RequestSpecHelpers, type: :request
+
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
@@ -82,9 +95,6 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = :random
-
-
-  Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
   # Seed global randomization in this process using the `--seed` CLI option.
   # Setting this allows you to use `--seed` to deterministically reproduce

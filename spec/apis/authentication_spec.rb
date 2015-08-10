@@ -1,14 +1,19 @@
 require "spec_helper"
 
-describe "API authentication" , :type => :api do
+describe "API authentication" , :type => :request do
 
   let!(:user) { FactoryGirl.create(:user) }
 
-  it "making a request without cookie token " do
-    get "/api/v1/items/1",:formate =>:json
-    last_response.status.should eql(401)
-    error = {:error=>'You need to sign in or sign up before continuing.'}
-    last_response.body.should  eql(error.to_json)
+  it "shouldn't be successful to make an API request without authorisation" do
+    get "/api/v1/users/1",:format =>:json
+    expect(last_response.status).to eql(401)
+    error = "HTTP Basic: Access denied.\n"
+    expect(last_response.body).to  eql(error)
+  end
+
+  it "should be successful with authentication" do
+    get_with_auth '/api/v1/users.json',user.email,"abcd1234ABCD"
+    expect(last_response.status).to eql(200)
   end
 
 end 
