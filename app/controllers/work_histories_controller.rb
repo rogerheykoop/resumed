@@ -30,10 +30,8 @@ class WorkHistoriesController < ApplicationController
       if @work_history.save
         format.html { redirect_to @work_history, notice: 'Work history was successfully created.' }
         format.js   { render }
-        format.json { render :show, status: :created, location: @work_history }
       else
         format.html { render :new }
-        format.json { render json: @work_history.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -44,10 +42,8 @@ class WorkHistoriesController < ApplicationController
     respond_to do |format|
       if @work_history.update(work_history_params)
         format.html { redirect_to @work_history, notice: 'Work history was successfully updated.' }
-        format.json { render :show, status: :ok, location: @work_history }
       else
         format.html { render :edit }
-        format.json { render json: @work_history.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -59,7 +55,6 @@ class WorkHistoriesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to work_histories_url, notice: 'Work history was successfully destroyed.' }
       format.js   { render }
-      format.json { head :no_content }
     end
   end
 
