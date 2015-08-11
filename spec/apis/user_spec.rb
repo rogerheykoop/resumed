@@ -60,5 +60,9 @@ describe "API" , :type => :request do
       post_with_auth "/api/v1/users/#{user.id}/resumes.json",{:resume=>{:name=>"another new resume name"}},user.email,"abcd1234ABCD"
       expect(JSON.parse(last_response.body)["resume"]["name"]).to eql("another new resume name")
     end
+    it "should let me destroy my own resume" do
+      delete_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.last.id.to_s}.json",user.email,"abcd1234ABCD"
+      expect(JSON.parse(last_response.body)).to eql({ "succes" => "resume destroyed"})
+    end
   end
 end
