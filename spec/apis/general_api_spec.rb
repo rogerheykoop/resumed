@@ -52,6 +52,7 @@ describe "API" , :type => :request do
     let!(:user) { FactoryGirl.create(:user,:user) }
     let!(:guestuser) { FactoryGirl.create(:user,:guest) }
     let!(:adminuser) { FactoryGirl.create(:user,:admin) }
+
     it "should let me change my own resume name" do
       patch_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.first.id.to_s}.json",{:resume=>{:name=>"new resume name"}},user.email,"abcd1234ABCD"
       expect(JSON.parse(last_response.body)["resume"]["name"]).to eql("new resume name")
@@ -64,5 +65,21 @@ describe "API" , :type => :request do
       delete_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.last.id.to_s}.json",user.email,"abcd1234ABCD"
       expect(JSON.parse(last_response.body)).to eql({ "succes" => "resume destroyed"})
     end
+
+    it "should let me change a resume name as an admin" do
+      patch_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.first.id.to_s}.json",{:resume=>{:name=>"new resume name"}},adminuser.email,"abcd1234ABCD"
+      expect(JSON.parse(last_response.body)["resume"]["name"]).to eql("new resume name")
+    end
+    # it "should let me create a new resume for another user as an admin" do
+    #   post_with_auth "/api/v1/users/#{user.id}/resumes.json",{:resume=>{:name=>"another new resume name"}},adminuser.email,"abcd1234ABCD"
+    #   expect(JSON.parse(last_response.body)["resume"]["name"]).to eql("another new resume name")
+    # end
+    # it "should let me destroy any resume as an admin" do
+    #   delete_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.last.id.to_s}.json",adminuser.email,"abcd1234ABCD"
+    #   expect(JSON.parse(last_response.body)).to eql({ "succes" => "resume destroyed"})
+    # end
+
+
+
   end
 end

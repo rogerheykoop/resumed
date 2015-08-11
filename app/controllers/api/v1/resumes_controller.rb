@@ -6,13 +6,18 @@ class Api::V1::ResumesController < Api::V1::BaseController
 
   def show
     if can? :read, Resume
-        render(json: Api::V1::ResumeSerializer.new(@resume).to_json)
+      render(json: Api::V1::ResumeSerializer.new(@resume).to_json)
     end
   end
 
   def create
     if can? :create, Resume
-      if @resume = current_user.resumes.create(resume_params)
+      if current_user.has_role?(:admin)
+        @user = User.find(resume_params[:user_id])
+      else
+        @user = current_user
+      end
+      if @resume = @user.resumes.create(resume_params)
         render(json: Api::V1::ResumeSerializer.new(@resume).to_json)
       else
         render :json => { :errors => @resume.errors.full_messages }
