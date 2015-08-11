@@ -35,6 +35,10 @@ module RequestSpecHelpers
     expect(JSON.parse(last_response.body)).to eql({ "errors" => "Error: You are not allowed to do this.", "status" =>403  })
   end
 
+  def it_should_have_role(rolename)
+    expect(JSON.parse(last_response.body)["user"]["roles"].first["name"].to_s).to eql(rolename.to_s)
+  end
+
 
   def env_with_auth(email, password)
     env.merge({

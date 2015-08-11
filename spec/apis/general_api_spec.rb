@@ -47,6 +47,12 @@ describe "API" , :type => :request do
       it_should_have_the_same_email_as("yetanothernewemail@example.com")
     end
 
+    it "should let me change a users role as an admin" do
+      patch_with_auth "/api/v1/users/#{guestuser.id}.json",{:user=>{:role=>"user"}},adminuser.email,"abcd1234ABCD"
+      it_should_have_role(:user)
+    end
+
+
   end
   describe "API edit of resumes" , :type => :request do
     let!(:user) { FactoryGirl.create(:user,:user) }

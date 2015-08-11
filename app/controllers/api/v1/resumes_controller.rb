@@ -5,6 +5,11 @@ class Api::V1::ResumesController < Api::V1::BaseController
   include ActiveHashRelation
 
   api :GET, "/v1/users/:user_id/resumes/:id", "Get resume"
+  description <<-EOS
+  == Get all users
+  Get an array of all users and their data.
+  EOS
+  formats ['json']
   def show
     if can? :read, Resume
       render(json: Api::V1::ResumeSerializer.new(@resume).to_json)
@@ -12,11 +17,11 @@ class Api::V1::ResumesController < Api::V1::BaseController
   end
 
   api :POST, "/v1/users/:user_id/resumes", "Create resume"
-  param :name, String, :desc => "Name", :required => true
+  param :name, String, :desc => "Name", :required => false
   formats ['json']
   def create
     if can? :create, Resume
-        @resume = Resume.new(resume_params)
+      @resume = Resume.new(resume_params)
       if !current_user.has_role?(:admin)
         @resume[:user_id] = current_user.id
       end
@@ -29,7 +34,7 @@ class Api::V1::ResumesController < Api::V1::BaseController
   end
 
   api :PUT, "/v1/users/:user_id/resumes/:id", "Update resume"
-  param :name, String, :desc => "Name", :required => true
+  param :name, String, :desc => "Name", :required => false
   formats ['json']
   def update
     if can? :update, Resume
@@ -41,7 +46,8 @@ class Api::V1::ResumesController < Api::V1::BaseController
     end
   end
 
-  api!
+  api :DELETE, "/v1/users/:user_id/resumes/:id", "Create resume"
+  formats ['json']
   def destroy
     if can? :destroy, Resume
       if @resume.destroy
@@ -55,7 +61,7 @@ class Api::V1::ResumesController < Api::V1::BaseController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_resume
-      @resume = Resume.find(params[:id])
+    @resume = Resume.find(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

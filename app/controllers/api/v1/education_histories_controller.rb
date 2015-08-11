@@ -6,14 +6,20 @@ class Api::V1::EducationHistoriesController < Api::V1::BaseController
 
   include ActiveHashRelation
 
-  api!
+  api :GET, "/v1/users/:user_id/resumes/:resume_id/education_histories/:id", "Get education_history data"
+  formats ['json']
   def show
     if can? :read, EducationHistory
       render(json: Api::V1::EducationHistorySerializer.new(@education_history).to_json)
     end
   end
 
-  api!
+  api :POST, "/v1/users/:user_id/resumes/:resume_id/education_histories", "Get education_history data"
+  param :education, String, :desc => "Education (type of education) ", :required => false
+  param :from, String, :desc => "From (date description, 04/12/2001 for instance) ", :required => false
+  param :until, String, :desc => "Until (date description, 04/12/2001 for instance), should be greater than from date ", :required => false
+  param :school_name, String, :desc => "Name of the school ", :required => false
+  formats ['json']
   def create
     if can? :create, EducationHistory
       @education_history = EducationHistory.new(education_history_params)
@@ -32,7 +38,12 @@ class Api::V1::EducationHistoriesController < Api::V1::BaseController
     end
   end
 
-  api!
+  api :PUT, "/v1/users/:user_id/resumes/:resume_id/education_histories/:id", "Update education_history data"
+  param :education, String, :desc => "Education (type of education) ", :required => false
+  param :from, String, :desc => "From (date description, 04/12/2001 for instance) ", :required => false
+  param :until, String, :desc => "Until (date description, 04/12/2001 for instance), should be greater than from date ", :required => false
+  param :school_name, String, :desc => "Name of the school ", :required => false
+  formats ['json']
   def update
     if can? :update, EducationHistory
       if current_user.has_role?(:admin) or (current_user.has_role?(:user) and @education_history.resume.user.id == current_user.id)
@@ -47,7 +58,8 @@ class Api::V1::EducationHistoriesController < Api::V1::BaseController
     end
   end
 
-  api!
+  api :DELETE, "/v1/users/:user_id/resumes/:resume_id/education_histories/:id", "Delete education_history data"
+  formats ['json']
   def destroy
     if can? :destroy, EducationHistory
       if @education_history.destroy
@@ -68,7 +80,7 @@ class Api::V1::EducationHistoriesController < Api::V1::BaseController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def education_history_params
-    params.require(:education_history).permit(:resume_id,:position,:from,:until,:school_name)
+    params.require(:education_history).permit(:resume_id,:from,:until,:school_name,:education)
   end
 
 
