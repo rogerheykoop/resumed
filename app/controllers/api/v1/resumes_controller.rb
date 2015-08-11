@@ -12,7 +12,7 @@ class Api::V1::ResumesController < Api::V1::BaseController
 
   def create
     if can? :create, Resume
-      if @resume = current_user.resume.create(resume_params)
+      if @resume = current_user.resumes.create(resume_params)
         render(json: Api::V1::ResumeSerializer.new(@resume).to_json)
       else
         render :json => { :errors => @resume.errors.full_messages }

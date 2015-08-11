@@ -54,6 +54,11 @@ describe "API" , :type => :request do
     let!(:adminuser) { FactoryGirl.create(:user,:admin) }
     it "should let me change my own resume name" do
       patch_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.first.id.to_s}.json",{:resume=>{:name=>"new resume name"}},user.email,"abcd1234ABCD"
+      expect(JSON.parse(last_response.body)["resume"]["name"]).to eql("new resume name")
+    end
+    it "should let me create a new resume" do
+      post_with_auth "/api/v1/users/#{user.id}/resumes.json",{:resume=>{:name=>"another new resume name"}},user.email,"abcd1234ABCD"
+      expect(JSON.parse(last_response.body)["resume"]["name"]).to eql("another new resume name")
     end
   end
 end
