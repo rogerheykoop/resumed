@@ -10,6 +10,9 @@ class Api::V1::BaseController < ApplicationController
   end
 
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
+  rescue_from CanCan::AccessDenied do |exception|
+      render :json => { :errors => "Error: You are not allowed to do this.",:status=>403 }
+  end
 
   def not_found
     return api_error(status: 404, errors: 'Not found')

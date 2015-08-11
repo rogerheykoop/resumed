@@ -3,11 +3,11 @@ class Ability
 
   def initialize(user)
     user ||= User.new
-    case(user.role)
-    when "admin"
+    if user.has_role?(:admin)
          can :manage, :all
-    when "user"
+    elsif user.has_role?(:user)
          can :read, :all
+         can :manage, User, :id => user.id
          can :manage, Resume, :user_id => user.id
          can :manage, EducationHistory, :user_id => user.id
          can :manage, WorkHistory, :user_id => user.id
