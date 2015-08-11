@@ -63,7 +63,7 @@ class Api::V1::WorkHistoriesController < Api::V1::BaseController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def work_history_params
-    params.require(:work_history).permit(:name,:user_id)
+      params.require(:work_history).permit(:resume_id,:position,:from,:until,:company_name)
   end
 
 
