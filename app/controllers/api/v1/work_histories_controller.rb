@@ -3,7 +3,7 @@ class Api::V1::WorkHistoriesController < Api::V1::BaseController
   load_and_authorize_resource :user
   load_and_authorize_resource :resume, :through => :user,:shallow=>true
   load_and_authorize_resource :work_history, :through => :resume,:shallow=>true
-  # load_and_authorize_resource :users, :through => :resume
+
   include ActiveHashRelation
 
   def show

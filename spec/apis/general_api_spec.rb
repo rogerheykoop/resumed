@@ -140,9 +140,55 @@ describe "API" , :type => :request do
       post_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.first.id.to_s}/work_histories.json",{:work_history=>{:company_name=>"New Company Name",:from=>Date.new(2000,01,01),:until=>Date.new(2001,02,02),:position=>"Chief Testing Officer"}},adminuser.email,"abcd1234ABCD"
       expect(JSON.parse(last_response.body)["work_history"]["company_name"]).to eql("New Company Name")
     end
+  end
+
+  describe "API education history" , :type => :request do
+    let!(:user) { FactoryGirl.create(:user,:user) }
+    let!(:guestuser) { FactoryGirl.create(:user,:guest) }
+    let!(:adminuser) { FactoryGirl.create(:user,:admin) }
+
+    it "shouldn't let me change my own education history items as a guest" do
+      patch_with_auth "/api/v1/users/#{guestuser.id}/resumes/#{guestuser.resumes.first.id.to_s}/education_histories/#{guestuser.resumes.first.education_histories.first.id.to_s}.json",{:education_history=>{:school_name=>"Higher Education School",:from=>Date.new(2000,01,01),:until=>Date.new(2001,02,02),:education=>"Basic Administration"}},guestuser.email,"abcd1234ABCD"
+      it_should_disallow_this
+    end
+
+
+    it "should let me change my own education history items as a user" do
+      patch_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.first.id.to_s}/education_histories/#{user.resumes.first.education_histories.first.id.to_s}.json",{:education_history=>{:school_name=>"Higher Education School",:from=>Date.new(2000,01,01),:until=>Date.new(2001,02,02),:education=>"Basic Administration"}},user.email,"abcd1234ABCD"
+      expect(JSON.parse(last_response.body)["education_history"]["school_name"]).to eql("Higher Education School")
+    end
+    it "shouldn't let me change others history items as a user" do
+      patch_with_auth "/api/v1/users/#{guestuser.id}/resumes/#{guestuser.resumes.first.id.to_s}/education_histories/#{guestuser.resumes.first.education_histories.first.id.to_s}.json",{:education_history=>{:school_name=>"Higher Education School",:from=>Date.new(2000,01,01),:until=>Date.new(2001,02,02),:education=>"Basic Administration"}},user.email,"abcd1234ABCD"
+      it_should_disallow_this
+    end
+    it "should let me delete my own education history items as a user" do
+      delete_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.first.id.to_s}/education_histories/#{user.resumes.first.education_histories.first.id.to_s}.json",user.email,"abcd1234ABCD"
+      expect(JSON.parse(last_response.body)).to eql({ "succes" => "education_history destroyed"})
+    end
+    it "should let me create my own education history items as a user" do
+      post_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.first.id.to_s}/education_histories.json",{:education_history=>{:school_name=>"New Company Name",:from=>Date.new(2000,01,01),:until=>Date.new(2001,02,02),:education=>"Basic Administration"}},user.email,"abcd1234ABCD"
+      expect(JSON.parse(last_response.body)["education_history"]["school_name"]).to eql("New Company Name")
+    end
+
+
+    it "should let me change a users education history items as an admin" do
+      patch_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.last.id.to_s}/education_histories/#{user.resumes.last.education_histories.first.id.to_s}.json",{:education_history=>{:school_name=>"Higher Education School",:from=>Date.new(2000,01,01),:until=>Date.new(2001,02,02),:education=>"Basic Administration"}},adminuser.email,"abcd1234ABCD"
+      expect(JSON.parse(last_response.body)["education_history"]["school_name"]).to eql("Higher Education School")
+    end
+    it "should let me delete a users education history items as an admin" do
+      delete_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.first.id.to_s}/education_histories/#{user.resumes.first.education_histories.first.id.to_s}.json",adminuser.email,"abcd1234ABCD"
+      expect(JSON.parse(last_response.body)).to eql({ "succes" => "education_history destroyed"})
+    end
+    it "should let me create a users education history items as a user" do
+      post_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.first.id.to_s}/education_histories.json",{:education_history=>{:school_name=>"New Company Name",:from=>Date.new(2000,01,01),:until=>Date.new(2001,02,02),:education=>"Basic Administration"}},adminuser.email,"abcd1234ABCD"
+      expect(JSON.parse(last_response.body)["education_history"]["school_name"]).to eql("New Company Name")
+    end
 
 
 
 
   end
+
+
+
 end
