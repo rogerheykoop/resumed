@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/Apipie/apipie-rails.git
+  revision: becc75b5f02663a1473ee94c0fbb98a82a2ce7bd
+  specs:
+    apipie-rails (0.3.4)
+      json
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -198,6 +205,7 @@ PLATFORMS
 DEPENDENCIES
   active_hash_relation
   active_model_serializers
+  apipie-rails!
   bootstrap-generators (~> 3.3.4)
   bootstrap-sass
   byebug

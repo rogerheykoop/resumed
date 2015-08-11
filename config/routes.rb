@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  apipie
   resources :education_histories
   resources :work_histories
   resources :resumes

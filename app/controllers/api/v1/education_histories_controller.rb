@@ -6,12 +6,14 @@ class Api::V1::EducationHistoriesController < Api::V1::BaseController
 
   include ActiveHashRelation
 
+  api!
   def show
     if can? :read, EducationHistory
       render(json: Api::V1::EducationHistorySerializer.new(@education_history).to_json)
     end
   end
 
+  api!
   def create
     if can? :create, EducationHistory
       @education_history = EducationHistory.new(education_history_params)
@@ -30,6 +32,7 @@ class Api::V1::EducationHistoriesController < Api::V1::BaseController
     end
   end
 
+  api!
   def update
     if can? :update, EducationHistory
       if current_user.has_role?(:admin) or (current_user.has_role?(:user) and @education_history.resume.user.id == current_user.id)
@@ -44,6 +47,7 @@ class Api::V1::EducationHistoriesController < Api::V1::BaseController
     end
   end
 
+  api!
   def destroy
     if can? :destroy, EducationHistory
       if @education_history.destroy

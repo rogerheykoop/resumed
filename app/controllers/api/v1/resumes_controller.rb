@@ -4,12 +4,16 @@ class Api::V1::ResumesController < Api::V1::BaseController
 
   include ActiveHashRelation
 
+  api :GET, "/v1/users/:user_id/resumes/:id", "Get resume"
   def show
     if can? :read, Resume
       render(json: Api::V1::ResumeSerializer.new(@resume).to_json)
     end
   end
 
+  api :POST, "/v1/users/:user_id/resumes", "Create resume"
+  param :name, String, :desc => "Name", :required => true
+  formats ['json']
   def create
     if can? :create, Resume
         @resume = Resume.new(resume_params)
@@ -24,6 +28,9 @@ class Api::V1::ResumesController < Api::V1::BaseController
     end
   end
 
+  api :PUT, "/v1/users/:user_id/resumes/:id", "Update resume"
+  param :name, String, :desc => "Name", :required => true
+  formats ['json']
   def update
     if can? :update, Resume
       if @resume.update(resume_params)
@@ -34,6 +41,7 @@ class Api::V1::ResumesController < Api::V1::BaseController
     end
   end
 
+  api!
   def destroy
     if can? :destroy, Resume
       if @resume.destroy

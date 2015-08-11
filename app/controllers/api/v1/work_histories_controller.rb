@@ -6,12 +6,14 @@ class Api::V1::WorkHistoriesController < Api::V1::BaseController
 
   include ActiveHashRelation
 
+  api!
   def show
     if can? :read, WorkHistory
       render(json: Api::V1::WorkHistorySerializer.new(@work_history).to_json)
     end
   end
 
+  api!
   def create
     if can? :create, WorkHistory
       @work_history = WorkHistory.new(work_history_params)
@@ -30,6 +32,7 @@ class Api::V1::WorkHistoriesController < Api::V1::BaseController
     end
   end
 
+  api!
   def update
     if can? :update, WorkHistory
       if current_user.has_role?(:admin) or (current_user.has_role?(:user) and @work_history.resume.user.id == current_user.id)
@@ -44,6 +47,7 @@ class Api::V1::WorkHistoriesController < Api::V1::BaseController
     end
   end
 
+  api!
   def destroy
     if can? :destroy, WorkHistory
       if @work_history.destroy

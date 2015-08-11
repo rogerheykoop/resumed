@@ -25,7 +25,7 @@ gem 'font-awesome-rails'
 # API
 gem 'active_model_serializers'
 gem 'active_hash_relation'
-#gem 'active_model_serializers-cancan'
+gem 'apipie-rails', :github => 'Apipie/apipie-rails'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
