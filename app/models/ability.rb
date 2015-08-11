@@ -9,8 +9,8 @@ class Ability
          can :read, :all
          can :manage, User, :id => user.id
          can :manage, Resume, :user_id => user.id
-         can :manage, EducationHistory, :user_id => user.id
-         can :manage, WorkHistory, :user_id => user.id
+         can :manage, EducationHistory, :resume => {:user_id => user.id }
+         can :manage, WorkHistory, :resume => {:user_id => user.id }
          can :create, Resume
          can :update, Resume
     else

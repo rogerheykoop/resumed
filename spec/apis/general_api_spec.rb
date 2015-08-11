@@ -66,18 +66,81 @@ describe "API" , :type => :request do
       expect(JSON.parse(last_response.body)).to eql({ "succes" => "resume destroyed"})
     end
 
+
     it "should let me change a resume name as an admin" do
       patch_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.first.id.to_s}.json",{:resume=>{:name=>"new resume name"}},adminuser.email,"abcd1234ABCD"
       expect(JSON.parse(last_response.body)["resume"]["name"]).to eql("new resume name")
     end
-    # it "should let me create a new resume for another user as an admin" do
-    #   post_with_auth "/api/v1/users/#{user.id}/resumes.json",{:resume=>{:name=>"another new resume name"}},adminuser.email,"abcd1234ABCD"
-    #   expect(JSON.parse(last_response.body)["resume"]["name"]).to eql("another new resume name")
-    # end
-    # it "should let me destroy any resume as an admin" do
-    #   delete_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.last.id.to_s}.json",adminuser.email,"abcd1234ABCD"
-    #   expect(JSON.parse(last_response.body)).to eql({ "succes" => "resume destroyed"})
-    # end
+    it "should let me create a new resume for another user as an admin" do
+      post_with_auth "/api/v1/users/#{user.id}/resumes.json",{:resume=>{:name=>"another new resume name"}},adminuser.email,"abcd1234ABCD"
+      expect(JSON.parse(last_response.body)["resume"]["name"]).to eql("another new resume name")
+    end
+    it "should let me destroy any resume as an admin" do
+      delete_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.last.id.to_s}.json",adminuser.email,"abcd1234ABCD"
+      expect(JSON.parse(last_response.body)).to eql({ "succes" => "resume destroyed"})
+    end
+
+    it "shouldnt let me change my own resume name as a guest" do
+      patch_with_auth "/api/v1/users/#{guestuser.id}/resumes/#{user.resumes.first.id.to_s}.json",{:resume=>{:name=>"new resume name"}},guestuser.email,"abcd1234ABCD"
+      it_should_disallow_this
+    end
+    it "shouldnt let me change somebody else's resume name as a guest" do
+      patch_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.first.id.to_s}.json",{:resume=>{:name=>"new resume name"}},guestuser.email,"abcd1234ABCD"
+      it_should_disallow_this
+    end
+    it "shouldnt let me delete my resume name as a guest" do
+      delete_with_auth "/api/v1/users/#{guestuser.id}/resumes/#{user.resumes.first.id.to_s}.json",guestuser.email,"abcd1234ABCD"
+      it_should_disallow_this
+    end
+    it "shouldnt let me delete somebody else's resume name as a guest" do
+      delete_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.first.id.to_s}.json",guestuser.email,"abcd1234ABCD"
+      it_should_disallow_this
+    end
+
+  end
+
+  describe "API work history" , :type => :request do
+    let!(:user) { FactoryGirl.create(:user,:user) }
+    let!(:guestuser) { FactoryGirl.create(:user,:guest) }
+    let!(:adminuser) { FactoryGirl.create(:user,:admin) }
+
+    it "shouldn't let me change my own work history items as a guest" do
+      patch_with_auth "/api/v1/users/#{guestuser.id}/resumes/#{guestuser.resumes.first.id.to_s}/work_histories/#{guestuser.resumes.first.work_histories.first.id.to_s}.json",{:work_history=>{:company_name=>"Changed Company Name",:from=>Date.new(2000,01,01),:until=>Date.new(2001,02,02),:position=>"Chief Testing Officer"}},guestuser.email,"abcd1234ABCD"
+      it_should_disallow_this
+    end
+
+
+    it "should let me change my own work history items as a user" do
+      patch_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.first.id.to_s}/work_histories/#{user.resumes.first.work_histories.first.id.to_s}.json",{:work_history=>{:company_name=>"Changed Company Name",:from=>Date.new(2000,01,01),:until=>Date.new(2001,02,02),:position=>"Chief Testing Officer"}},user.email,"abcd1234ABCD"
+      expect(JSON.parse(last_response.body)["work_history"]["company_name"]).to eql("Changed Company Name")
+    end
+    it "shouldn't let me change others history items as a user" do
+      patch_with_auth "/api/v1/users/#{guestuser.id}/resumes/#{guestuser.resumes.first.id.to_s}/work_histories/#{guestuser.resumes.first.work_histories.first.id.to_s}.json",{:work_history=>{:company_name=>"Changed Company Name",:from=>Date.new(2000,01,01),:until=>Date.new(2001,02,02),:position=>"Chief Testing Officer"}},user.email,"abcd1234ABCD"
+      it_should_disallow_this
+    end
+    it "should let me delete my own work history items as a user" do
+      delete_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.first.id.to_s}/work_histories/#{user.resumes.first.work_histories.first.id.to_s}.json",user.email,"abcd1234ABCD"
+      expect(JSON.parse(last_response.body)).to eql({ "succes" => "work_history destroyed"})
+    end
+    it "should let me create my own work history items as a user" do
+      post_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.first.id.to_s}/work_histories.json",{:work_history=>{:company_name=>"New Company Name",:from=>Date.new(2000,01,01),:until=>Date.new(2001,02,02),:position=>"Chief Testing Officer"}},user.email,"abcd1234ABCD"
+      expect(JSON.parse(last_response.body)["work_history"]["company_name"]).to eql("New Company Name")
+    end
+
+
+    it "should let me change a users work history items as an admin" do
+      patch_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.last.id.to_s}/work_histories/#{user.resumes.last.work_histories.first.id.to_s}.json",{:work_history=>{:company_name=>"Changed Company Name",:from=>Date.new(2000,01,01),:until=>Date.new(2001,02,02),:position=>"Chief Testing Officer"}},adminuser.email,"abcd1234ABCD"
+      expect(JSON.parse(last_response.body)["work_history"]["company_name"]).to eql("Changed Company Name")
+    end
+    it "should let me delete a users work history items as an admin" do
+      delete_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.first.id.to_s}/work_histories/#{user.resumes.first.work_histories.first.id.to_s}.json",adminuser.email,"abcd1234ABCD"
+      expect(JSON.parse(last_response.body)).to eql({ "succes" => "work_history destroyed"})
+    end
+    it "should let me create a users work history items as a user" do
+      post_with_auth "/api/v1/users/#{user.id}/resumes/#{user.resumes.first.id.to_s}/work_histories.json",{:work_history=>{:company_name=>"New Company Name",:from=>Date.new(2000,01,01),:until=>Date.new(2001,02,02),:position=>"Chief Testing Officer"}},adminuser.email,"abcd1234ABCD"
+      expect(JSON.parse(last_response.body)["work_history"]["company_name"]).to eql("New Company Name")
+    end
+
 
 
 

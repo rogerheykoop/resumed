@@ -12,12 +12,11 @@ class Api::V1::ResumesController < Api::V1::BaseController
 
   def create
     if can? :create, Resume
-      if current_user.has_role?(:admin)
-        @user = User.find(resume_params[:user_id])
-      else
-        @user = current_user
+        @resume = Resume.new(resume_params)
+      if !current_user.has_role?(:admin)
+        @resume[:user_id] = current_user.id
       end
-      if @resume = @user.resumes.create(resume_params)
+      if @resume.save
         render(json: Api::V1::ResumeSerializer.new(@resume).to_json)
       else
         render :json => { :errors => @resume.errors.full_messages }
@@ -48,7 +47,7 @@ class Api::V1::ResumesController < Api::V1::BaseController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_resume
-    @resume = Resume.find(params[:id])
+      @resume = Resume.find(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
