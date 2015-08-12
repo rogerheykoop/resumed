@@ -6,14 +6,24 @@ class Api::V1::WorkHistoriesController < Api::V1::BaseController
 
   include ActiveHashRelation
 
-  api!
+  def_param_group :work_history do
+    param :education, String, :desc => "Education (type of education) ", :required => false
+    param :from, String, :desc => "From (date description, 04/12/2001 for instance) ", :required => false
+    param :until, String, :desc => "Until (date description, 04/12/2001 for instance), should be greater than from date ", :required => false
+    param :school_name, String, :desc => "Name of the school/university ", :required => false
+  end
+
+  api :GET, "/v1/users/:user_id/resumes/:resume_id/work_histories/:id", "Get work_history data (array)"
+  formats ['json']
   def show
     if can? :read, WorkHistory
       render(json: Api::V1::WorkHistorySerializer.new(@work_history).to_json)
     end
   end
 
-  api!
+  api :POST, "/v1/users/:user_id/resumes/:resume_id/work_histories", "Get education_history data"
+  param_group :work_history
+  formats ['json']
   def create
     if can? :create, WorkHistory
       @work_history = WorkHistory.new(work_history_params)
@@ -32,7 +42,9 @@ class Api::V1::WorkHistoriesController < Api::V1::BaseController
     end
   end
 
-  api!
+  api :PUT, "/v1/users/:user_id/resumes/:resume_id/work_histories/:id", "Update education_history data"
+  param_group :work_history
+  formats ['json']
   def update
     if can? :update, WorkHistory
       if current_user.has_role?(:admin) or (current_user.has_role?(:user) and @work_history.resume.user.id == current_user.id)
@@ -47,7 +59,8 @@ class Api::V1::WorkHistoriesController < Api::V1::BaseController
     end
   end
 
-  api!
+  api :DELETE, "/v1/users/:user_id/resumes/:resume_id/work_histories/:id", "Get work_history data (array)"
+  formats ['json']
   def destroy
     if can? :destroy, WorkHistory
       if @work_history.destroy

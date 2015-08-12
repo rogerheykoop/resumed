@@ -4,6 +4,13 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   include ActiveHashRelation
 
+  def_param_group :user do
+    param :email, String, :desc => "E-mail address", :required => false
+    param :password, String, :desc => "Password", :required => false
+    param :password_confirmation, String, :desc => "Password Confirmation", :required => false
+    param :role, String, :desc => "Role name (admin only)", :required => false
+  end
+
   api :GET, "/v1/users", "Get users"
   formats [:json]
   description <<-EOS
@@ -35,10 +42,6 @@ formats [:json]
 
   api :PUT, "/v1/users/:id", "Update user by id"
   formats [:json]
-  param :email, String, :desc => "E-mail address", :required => false
-  param :password, String, :desc => "Password", :required => false
-  param :password_confirmation, String, :desc => "Password Confirmation", :required => false
-  param :role, String, :desc => "Role name (admin only)", :required => false
   description <<-EOS
   == Update a user record
   This will update a single user object and upon success return a complete user object, including all resume data. All roles have access.

@@ -6,6 +6,13 @@ class Api::V1::EducationHistoriesController < Api::V1::BaseController
 
   include ActiveHashRelation
 
+  def_param_group :education_history do
+    param :education, String, :desc => "Education (type of education) ", :required => false
+    param :from, String, :desc => "From (date description, 04/12/2001 for instance) ", :required => false
+    param :until, String, :desc => "Until (date description, 04/12/2001 for instance), should be greater than from date ", :required => false
+    param :school_name, String, :desc => "Name of the school ", :required => false
+  end
+
   api :GET, "/v1/users/:user_id/resumes/:resume_id/education_histories/:id", "Get education_history data"
   formats ['json']
   def show
@@ -14,11 +21,8 @@ class Api::V1::EducationHistoriesController < Api::V1::BaseController
     end
   end
 
-  api :POST, "/v1/users/:user_id/resumes/:resume_id/education_histories", "Get education_history data"
-  param :education, String, :desc => "Education (type of education) ", :required => false
-  param :from, String, :desc => "From (date description, 04/12/2001 for instance) ", :required => false
-  param :until, String, :desc => "Until (date description, 04/12/2001 for instance), should be greater than from date ", :required => false
-  param :school_name, String, :desc => "Name of the school ", :required => false
+  api :POST, "/v1/users/:user_id/resumes/:resume_id/education_histories", "add new education_history data to resume"
+  param_group :education_history
   formats ['json']
   def create
     if can? :create, EducationHistory
@@ -39,10 +43,7 @@ class Api::V1::EducationHistoriesController < Api::V1::BaseController
   end
 
   api :PUT, "/v1/users/:user_id/resumes/:resume_id/education_histories/:id", "Update education_history data"
-  param :education, String, :desc => "Education (type of education) ", :required => false
-  param :from, String, :desc => "From (date description, 04/12/2001 for instance) ", :required => false
-  param :until, String, :desc => "Until (date description, 04/12/2001 for instance), should be greater than from date ", :required => false
-  param :school_name, String, :desc => "Name of the school ", :required => false
+  param_group :education_history
   formats ['json']
   def update
     if can? :update, EducationHistory
