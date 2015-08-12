@@ -40,6 +40,7 @@ It still needs to be augmented with API return data; time constraints have preve
 == rspec tests
 
 The API is covered by rspec tests, however the coverage is not yet at 100% due to time constraints. You can find the specs in <tt>spec/apis</tt>
+<tt>rake spec</tt> will run the tests.
 
 I've used a few custom supports that you can find in <tt>spec/supports</tt>.
 
