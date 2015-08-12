@@ -4,7 +4,7 @@ This app was made for the mystery-api challenge.
 
 == The app itself
 
-This app allows users to enter a (very basic and simplified) resum&eacute;. Each user can enter multiple resume's.
+This app allows users to enter a (very basic and simplified) resume/CV;. Each user can enter multiple resume's.
 A resume consists of two 1:n relationships with work histories and education histories.
 
 There is a basic web app available, which I didn't spend too much time on since it fell outside of the assignment scope. Eventually this will turn into a an app which allows users to enter their resume's, and which allows brokers to anonimize the CV's. As such the web app needs to some more work.
